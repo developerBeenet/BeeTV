@@ -143,7 +143,7 @@ public class PlayerActivity extends AppCompatActivity {
         //   .drm(drmConfiguration.build());
 
         if(url == " "){
-            url = "https://xcdrsbsv-b.beenet.com.sv/abr_france24/abr_france24_out/playlist.m3u8";
+            url = "https://xcdrsbsv-a.beenet.com.sv/foxnews_720/foxnews_720_out/playlist.m3u8";
         }
 
         TypedSource typedSource = TypedSource.Builder
