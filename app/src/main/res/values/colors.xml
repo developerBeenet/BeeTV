@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="THEOWhite">#FFFFFF</color>
+    <color name="THEOBlue">#3380FF</color>
+    <color name="THEOGray">#393939</color>
+    <color name="THEOYellow">#FFC41C</color>
+    <color name="THEOYellowAlt">#FFB400</color>
+    <!-- Color App Beenet -->
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+    <color name="transparent">#63B3B3B3</color>
+    <color name="transparent_2">#004A4848</color>
+    <color name="orange_1">#A4FF6600</color>
+</resources>
