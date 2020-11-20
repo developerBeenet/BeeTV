@@ -2,6 +2,7 @@ package com.example.theo_androidtv.ui;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -160,12 +162,16 @@ public class PlayerActivity extends AppCompatActivity {
         player.getAbr().setAbrStrategy(abrConfig);
         player.getAbr().setTargetBuffer(4);
 
-
-
+        
         // Creating a SourceDescription builder that contains the settings to be applied as a new
         // THEOplayer source.
+        /*
         SourceDescription.Builder sourceDescription = sourceDescription(typedSource)
                 .poster(getString(R.string.defaultPosterUrl));
+         */
+
+        SourceDescription.Builder sourceDescription = sourceDescription(typedSource)
+                .poster("@drawable/theoplayer_logo.jpg");
 
         //Setting the source to the player
         player.setSource(sourceDescription.build());
