@@ -97,11 +97,8 @@ public class PlayerActivity extends AppCompatActivity {
     THEOplayerView theoplayerView;
     Player player;
 
-
     public String stream = " ";
     String auth, id_category = "0";
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,11 +116,12 @@ public class PlayerActivity extends AppCompatActivity {
         initializationViews();
         playerViewModel = ViewModelProviders.of(this).get(PlayerViewModel.class);
 
+        /** Poblando Spinner **/
+        getCategory();
+
         /** Poblando RecyclerView **/
         getPopularChannel(id_category);
 
-        /** Poblando Spinner **/
-        getCategory();
         // lambda expression
         swipeRefresh.setOnRefreshListener(() -> {
             getPopularChannel(id_category);
@@ -240,7 +238,7 @@ public class PlayerActivity extends AppCompatActivity {
 
     private void prepareRecyclerView(List<Channel> channelList) {
 
-        mChannelAdapter = new ChannelAdapter(channelList);
+        mChannelAdapter = new ChannelAdapter(channelList,cat);
         if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         } else {
@@ -275,6 +273,7 @@ public class PlayerActivity extends AppCompatActivity {
 
     private void prepareSpinnerCategories(List<Category> categoryList){
 
+        cat = categoryList;
         categoryList.set(0,new Category(0,"Todos"));
 
         ArrayAdapter<Category> arrayAdapter = new ArrayAdapter<>(getApplicationContext(),

@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.theo_androidtv.model.Category;
 import com.example.theo_androidtv.model.Channel;
 import com.example.theo_androidtv.R;
 
@@ -22,10 +23,13 @@ public class ChannelAdapter extends RecyclerView.Adapter<BaseViewHolder>
     private static final String TAG = "ChannelAdapter";
     private View.OnClickListener listener;
     private List<Channel> mChannelList;
+    private List<Category> mCategoryList;
+    private String genero;
 
 
-    public ChannelAdapter(List<Channel> channelList) {
+    public ChannelAdapter(List<Channel> channelList,List<Category> categoryList) {
         mChannelList = channelList;
+        mCategoryList = categoryList;
     }
 
     @NonNull
@@ -111,7 +115,17 @@ public class ChannelAdapter extends RecyclerView.Adapter<BaseViewHolder>
             }
 
             if (mChannel.getGenre_id() != null) {
-                tvCategory.setText(mChannel.getGenre_id());
+
+                //Recorriendo Arraylist de Categorias para traducir el id categoria en nombre
+                for (int i = 0; i < mCategoryList.size(); i++){
+
+                    if (mChannel.getGenre_id().equals(Integer.toString(mCategoryList.get(i).getId()))){
+                        genero = mCategoryList.get(i).getName();
+                    }
+                }
+
+                tvCategory.setText(genero);
+                //tvCategory.setText(mChannel.getGenre_id());
             }
 
             if (mChannel.getStream_url() != null) {
