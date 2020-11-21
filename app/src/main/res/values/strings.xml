@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BeenetTV</string>
+    <string name="app_name">BeenetPlay</string>
 
     <string name="defaultSourceUrl">https://cdn.theoplayer.com/video/dash/big_buck_bunny/BigBuckBunny_10s_simple_2014_05_09.mpd</string>
     <string name="defaultLicenseUrl">https://amssamples.keydelivery.mediaservices.windows.net/Widevine/?KID=1ab45440-532c-4399-94dc-5c5ad9584bac</string>
