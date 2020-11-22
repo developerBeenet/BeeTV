@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -50,6 +52,7 @@ import com.example.theo_androidtv.model.LoginResponse;
 import com.example.theo_androidtv.service.RestApiService;
 import com.example.theo_androidtv.service.RetrofitInstance;
 import com.example.theo_androidtv.viewmodel.PlayerViewModel;
+import com.muddzdev.styleabletoast.StyleableToast;
 import com.theoplayer.android.api.THEOplayerView;
 import com.theoplayer.android.api.abr.AbrStrategyConfiguration;
 import com.theoplayer.android.api.abr.AbrStrategyType;
@@ -314,7 +317,7 @@ public class PlayerActivity extends AppCompatActivity {
                 handled = true;
                 //Llamar a la funcion cerrar sesion
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogCustom);
                 builder.setMessage("Quieres salir de la Aplicacion?");
                 builder.setTitle("Salir");
                 builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
@@ -333,6 +336,28 @@ public class PlayerActivity extends AppCompatActivity {
 
                 AlertDialog dialog = builder.create();
                 dialog.show();
+
+
+                /*
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                LayoutInflater inflater = getLayoutInflater();
+                View view = inflater.inflate(R.layout.dialog_custom,null);
+                builder.setView(view);
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+                TextView txt = view.findViewById(R.id.text_dialog);
+                txt.setText("Cerrar Sesion?");
+                Button btnSi = view.findViewById(R.id.btnConfirm);
+                btnSi.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+                */
 
                 break;
         }
@@ -370,8 +395,14 @@ public class PlayerActivity extends AppCompatActivity {
                 LoginResponse loginResponse = response.body();
                 if (loginResponse.getStatus_code() == 200){
 
-                    Toast.makeText(getApplicationContext(),"Sesion Finalizada",Toast.LENGTH_LONG).show();
-                    //StyleableToast.makeText(getApplicationContext(),"Sesion Finalizada",R.style.msgToast).show();
+                    //Toast.makeText(getApplicationContext(),"Sesion Finalizada",Toast.LENGTH_LONG).show();
+                    new StyleableToast
+                            .Builder(getApplicationContext())
+                            .text("SESION FINALIZADA")
+                            .textSize(16)
+                            .textColor(Color.BLACK)
+                            .backgroundColor(Color.rgb(255,112,0))
+                            .show();
                     //Volver a Inicio de Sesion
                     //Intent intent = new Intent (getApplicationContext(), LoginActivityTV.class);
                     //startActivityForResult(intent, 0);
@@ -379,13 +410,25 @@ public class PlayerActivity extends AppCompatActivity {
                     finish();
 
                 }else{
-                    Toast.makeText(getApplicationContext(), loginResponse.getError_description(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(), loginResponse.getError_description(), Toast.LENGTH_LONG).show();
+                    new StyleableToast
+                            .Builder(getApplicationContext())
+                            .text(loginResponse.getError_description())
+                            .textColor(Color.BLACK)
+                            .backgroundColor(Color.rgb(255,112,0))
+                            .show();
                 }
             }
 
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+                new StyleableToast
+                        .Builder(getApplicationContext())
+                        .text(t.getMessage())
+                        .textColor(Color.BLACK)
+                        .backgroundColor(Color.rgb(255,112,0))
+                        .show();
             }
         });
     }

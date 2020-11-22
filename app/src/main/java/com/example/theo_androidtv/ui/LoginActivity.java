@@ -1,16 +1,19 @@
 package com.example.theo_androidtv.ui;
 
 
+import androidx.annotation.DrawableRes;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import com.example.theo_androidtv.R;
 import com.example.theo_androidtv.model.LoginResponse;
 import com.example.theo_androidtv.service.RestApiService;
 import com.example.theo_androidtv.service.RetrofitInstance;
+import com.muddzdev.styleabletoast.StyleableToast;
 
 import android.util.Base64;
 import android.view.View;
@@ -115,8 +118,15 @@ public class LoginActivity extends Activity {
 
                     //System.out.println("ERROR: " + loginResponse.getError_description());
 
-                    Toast.makeText(getApplicationContext(),"Sesion Iniciada",Toast.LENGTH_LONG).show();
-                    //StyleableToast.makeText(getApplicationContext(),"Sesion Iniciada",R.style.msgToast).show();
+                   new StyleableToast
+                            .Builder(getApplicationContext())
+                            .text("SESION INICIADA")
+                            .textSize(16)
+                            .textColor(Color.BLACK)
+                            .iconStart(R.drawable.ic_error)
+                            .backgroundColor(Color.rgb(255,112,0))
+                            .show();
+
                     //Llamada siguiente ventana PlayerActivity.class y Enviando parametro auth
                     Intent intent = new Intent (getApplicationContext(), PlayerActivity.class);
                     Bundle myBundle = new Bundle();
@@ -125,13 +135,26 @@ public class LoginActivity extends Activity {
                     startActivityForResult(intent, 0);
 
                 }else{
-                    Toast.makeText(getApplicationContext(), loginResponse.getError_description(), Toast.LENGTH_LONG).show();
+                   // Toast.makeText(getApplicationContext(), loginResponse.getError_description(), Toast.LENGTH_LONG).show();
+                    new StyleableToast
+                            .Builder(getApplicationContext())
+                            .text(loginResponse.getError_description())
+                            .textColor(Color.BLACK)
+                            .iconStart(R.drawable.ic_error)
+                            .backgroundColor(Color.rgb(255,112,0))
+                            .show();
                 }
             }
 
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+               // Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+                new StyleableToast
+                        .Builder(getApplicationContext())
+                        .text(t.getMessage())
+                        .textColor(Color.BLACK)
+                        .backgroundColor(Color.rgb(255,112,0))
+                        .show();
             }
         });
     }
