@@ -20,8 +20,24 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:chromeless="true">
-
         </com.theoplayer.android.api.THEOplayerView>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="500dp"
+            android:layout_height="6dp"
+            android:indeterminate="false"
+            android:progress="1"
+            android:progressTint="#FF6600"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.487"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.969"
+            tools:ignore="MissingConstraints" />
+        <!-- android:max="600"-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

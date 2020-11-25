@@ -2,11 +2,13 @@ package com.example.theo_androidtv.ui;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -20,7 +22,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -43,13 +47,14 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 
 import com.example.theo_androidtv.R;
-import com.example.theo_androidtv.databinding.ActivityMainBinding;
+//import com.example.theo_androidtv.databinding.ActivityMainBinding;
 import com.example.theo_androidtv.model.Category;
 import com.example.theo_androidtv.model.Channel;
 import com.example.theo_androidtv.model.LoginResponse;
 import com.example.theo_androidtv.service.RestApiService;
 import com.example.theo_androidtv.service.RetrofitInstance;
 import com.example.theo_androidtv.viewmodel.PlayerViewModel;
+import com.muddzdev.styleabletoast.StyleableToast;
 import com.theoplayer.android.api.THEOplayerView;
 import com.theoplayer.android.api.abr.AbrStrategyConfiguration;
 import com.theoplayer.android.api.abr.AbrStrategyType;
@@ -83,6 +88,13 @@ public class PlayerActivity extends AppCompatActivity {
     DrawerLayout drawerLayout; //Permite el despliegue de menu lateral en conjunto con mainLayout y menuLateral
     ConstraintLayout mainLayout, menuLateral;
 
+    /* ProgressBar */
+    private ProgressBar progressBar;
+    private int progressStatus = 0;
+    private int duration; //Suponiendo en seg
+
+    private Handler handler = new Handler();
+
     /* Categories */
     Spinner sp_categorias;
     List<Category> cat = null;  //Lista de Objetos Categoria
@@ -96,11 +108,13 @@ public class PlayerActivity extends AppCompatActivity {
 
     THEOplayerView theoplayerView;
     Player player;
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> Dev_change
     public String stream = " ";
     String auth, id_category = "0";
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,11 +132,39 @@ public class PlayerActivity extends AppCompatActivity {
         initializationViews();
         playerViewModel = ViewModelProviders.of(this).get(PlayerViewModel.class);
 
-        /** Poblando RecyclerView **/
-        getPopularChannel(id_category);
+        /** Progress Bar animation**/
+        duration = 200;
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar.setMax(duration);
+        // Start long running operation in a background thread
+        new Thread(new Runnable() {
+            public void run() {
+                while (progressStatus < duration) {
+                    progressStatus += 1;
+                    // Update the progress bar and display the
+                    //current value in the text view
+                    handler.post(new Runnable() {
+                        public void run() {
+                            progressBar.setProgress(progressStatus);
+                        }
+                    });
+                    try {
+                        // Sleep for 200 milliseconds.
+                        Thread.sleep(200);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
+        /* */
 
         /** Poblando Spinner **/
         getCategory();
+
+        /** Poblando RecyclerView **/
+        getPopularChannel(id_category);
+
         // lambda expression
         swipeRefresh.setOnRefreshListener(() -> {
             getPopularChannel(id_category);
@@ -179,7 +221,6 @@ public class PlayerActivity extends AppCompatActivity {
 
         //Playing the source in the FullScreen Landscape mode
         theoplayerView.getSettings().setFullScreenOrientationCoupled(true);
-
     }
 
     // Overriding default events
@@ -222,6 +263,9 @@ public class PlayerActivity extends AppCompatActivity {
         mainLayout = (ConstraintLayout) findViewById(R.id.mainLayout);
         menuLateral = (ConstraintLayout) findViewById(R.id.menuLateral);
 
+        //ProgressBar de Programm EPG
+        //progressProgram = (ProgressBar) findViewById(R.id.progressProgram);
+        //progressAnimator = ObjectAnimator.ofInt(progressProgram,"progress",0,100);
     }
 
     public void getPopularChannel(String filter) {
@@ -238,7 +282,7 @@ public class PlayerActivity extends AppCompatActivity {
 
     private void prepareRecyclerView(List<Channel> channelList) {
 
-        mChannelAdapter = new ChannelAdapter(channelList);
+        mChannelAdapter = new ChannelAdapter(channelList,cat);
         if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         } else {
@@ -252,6 +296,7 @@ public class PlayerActivity extends AppCompatActivity {
             public void onClick(View v) {
                 stream = channelList.get(mRecyclerView.getChildAdapterPosition(v)).getStream_url();
                 configureTheoPlayer(channelList.get(mRecyclerView.getChildAdapterPosition(v)).getStream_url());
+
 
             }
         });
@@ -273,6 +318,7 @@ public class PlayerActivity extends AppCompatActivity {
 
     private void prepareSpinnerCategories(List<Category> categoryList){
 
+        cat = categoryList;
         categoryList.set(0,new Category(0,"Todos"));
 
         ArrayAdapter<Category> arrayAdapter = new ArrayAdapter<>(getApplicationContext(),
@@ -313,7 +359,7 @@ public class PlayerActivity extends AppCompatActivity {
                 handled = true;
                 //Llamar a la funcion cerrar sesion
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogCustom);
                 builder.setMessage("Quieres salir de la Aplicacion?");
                 builder.setTitle("Salir");
                 builder.setPositiveButton("Si", new DialogInterface.OnClickListener() {
@@ -332,6 +378,28 @@ public class PlayerActivity extends AppCompatActivity {
 
                 AlertDialog dialog = builder.create();
                 dialog.show();
+
+
+                /*
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                LayoutInflater inflater = getLayoutInflater();
+                View view = inflater.inflate(R.layout.dialog_custom,null);
+                builder.setView(view);
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+                TextView txt = view.findViewById(R.id.text_dialog);
+                txt.setText("Cerrar Sesion?");
+                Button btnSi = view.findViewById(R.id.btnConfirm);
+                btnSi.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+                */
 
                 break;
         }
@@ -369,8 +437,14 @@ public class PlayerActivity extends AppCompatActivity {
                 LoginResponse loginResponse = response.body();
                 if (loginResponse.getStatus_code() == 200){
 
-                    Toast.makeText(getApplicationContext(),"Sesion Finalizada",Toast.LENGTH_LONG).show();
-                    //StyleableToast.makeText(getApplicationContext(),"Sesion Finalizada",R.style.msgToast).show();
+                    //Toast.makeText(getApplicationContext(),"Sesion Finalizada",Toast.LENGTH_LONG).show();
+                    new StyleableToast
+                            .Builder(getApplicationContext())
+                            .text("SESION FINALIZADA")
+                            .textSize(16)
+                            .textColor(Color.BLACK)
+                            .backgroundColor(Color.rgb(255,112,0))
+                            .show();
                     //Volver a Inicio de Sesion
                     //Intent intent = new Intent (getApplicationContext(), LoginActivityTV.class);
                     //startActivityForResult(intent, 0);
@@ -378,13 +452,25 @@ public class PlayerActivity extends AppCompatActivity {
                     finish();
 
                 }else{
-                    Toast.makeText(getApplicationContext(), loginResponse.getError_description(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(getApplicationContext(), loginResponse.getError_description(), Toast.LENGTH_LONG).show();
+                    new StyleableToast
+                            .Builder(getApplicationContext())
+                            .text(loginResponse.getError_description())
+                            .textColor(Color.BLACK)
+                            .backgroundColor(Color.rgb(255,112,0))
+                            .show();
                 }
             }
 
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+                new StyleableToast
+                        .Builder(getApplicationContext())
+                        .text(t.getMessage())
+                        .textColor(Color.BLACK)
+                        .backgroundColor(Color.rgb(255,112,0))
+                        .show();
             }
         });
     }
