@@ -1,10 +1,12 @@
 package com.example.theo_androidtv.ui;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -25,6 +27,11 @@ public class ChannelAdapter extends RecyclerView.Adapter<BaseViewHolder>
     private List<Channel> mChannelList;
     private List<Category> mCategoryList;
     private String genero;
+
+    //Progresive Bar
+    private int duration;
+    private int progressStatus = 0;
+    private Handler handler = new Handler();
 
 
     public ChannelAdapter(List<Channel> channelList,List<Category> categoryList) {
@@ -84,6 +91,8 @@ public class ChannelAdapter extends RecyclerView.Adapter<BaseViewHolder>
         TextView tvCategory;
         TextView tvUrl;
         LinearLayout linearLayout;
+        ProgressBar progress_Bar;
+
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -91,6 +100,35 @@ public class ChannelAdapter extends RecyclerView.Adapter<BaseViewHolder>
             tvName = itemView.findViewById(R.id.nombre_canal);
             tvCategory = itemView.findViewById(R.id.cat_canal);
             tvUrl = itemView.findViewById(R.id.url_canal);
+            progress_Bar = (ProgressBar) itemView.findViewById(R.id.progress_Bar);
+
+            /* Logica Barra de Progreso */
+            duration = 200;
+            progress_Bar.setMax(duration); //Valor maximo del medidor
+            // Start long running operation in a background thread
+            new Thread(new Runnable() {
+                public void run() {
+                    while (progressStatus < duration) {
+                        progressStatus += 1;
+                        // Update the progress bar and display the
+                        //current value in the text view
+                        handler.post(new Runnable() {
+                            public void run() {
+                                progress_Bar.setProgress(progressStatus);
+                            }
+                        });
+                        try {
+                            // Sleep for 200 milliseconds.
+                            Thread.sleep(400);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    progressStatus = 0;
+                }
+            }).start();
+            /* Fin ProgressBar */
+
         }
 
         protected void clear() {
@@ -148,8 +186,6 @@ public class ChannelAdapter extends RecyclerView.Adapter<BaseViewHolder>
                 }
             });
             */
-
-
 
         }
     }

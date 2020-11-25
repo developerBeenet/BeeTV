@@ -2,6 +2,7 @@ package com.example.theo_androidtv.ui;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -21,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,7 +47,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 
 import com.example.theo_androidtv.R;
-import com.example.theo_androidtv.databinding.ActivityMainBinding;
+//import com.example.theo_androidtv.databinding.ActivityMainBinding;
 import com.example.theo_androidtv.model.Category;
 import com.example.theo_androidtv.model.Channel;
 import com.example.theo_androidtv.model.LoginResponse;
@@ -86,6 +88,13 @@ public class PlayerActivity extends AppCompatActivity {
     DrawerLayout drawerLayout; //Permite el despliegue de menu lateral en conjunto con mainLayout y menuLateral
     ConstraintLayout mainLayout, menuLateral;
 
+    /* ProgressBar */
+    private ProgressBar progressBar;
+    private int progressStatus = 0;
+    private int duration; //Suponiendo en seg
+
+    private Handler handler = new Handler();
+
     /* Categories */
     Spinner sp_categorias;
     List<Category> cat = null;  //Lista de Objetos Categoria
@@ -118,6 +127,33 @@ public class PlayerActivity extends AppCompatActivity {
         /** Inicializando de elementos Visuales **/
         initializationViews();
         playerViewModel = ViewModelProviders.of(this).get(PlayerViewModel.class);
+
+        /** Progress Bar animation**/
+        duration = 200;
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar.setMax(duration);
+        // Start long running operation in a background thread
+        new Thread(new Runnable() {
+            public void run() {
+                while (progressStatus < duration) {
+                    progressStatus += 1;
+                    // Update the progress bar and display the
+                    //current value in the text view
+                    handler.post(new Runnable() {
+                        public void run() {
+                            progressBar.setProgress(progressStatus);
+                        }
+                    });
+                    try {
+                        // Sleep for 200 milliseconds.
+                        Thread.sleep(200);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
+        /* */
 
         /** Poblando Spinner **/
         getCategory();
@@ -182,7 +218,6 @@ public class PlayerActivity extends AppCompatActivity {
 
         //Playing the source in the FullScreen Landscape mode
         theoplayerView.getSettings().setFullScreenOrientationCoupled(true);
-
     }
 
     // Overriding default events
@@ -225,6 +260,9 @@ public class PlayerActivity extends AppCompatActivity {
         mainLayout = (ConstraintLayout) findViewById(R.id.mainLayout);
         menuLateral = (ConstraintLayout) findViewById(R.id.menuLateral);
 
+        //ProgressBar de Programm EPG
+        //progressProgram = (ProgressBar) findViewById(R.id.progressProgram);
+        //progressAnimator = ObjectAnimator.ofInt(progressProgram,"progress",0,100);
     }
 
     public void getPopularChannel(String filter) {
@@ -255,6 +293,7 @@ public class PlayerActivity extends AppCompatActivity {
             public void onClick(View v) {
                 stream = channelList.get(mRecyclerView.getChildAdapterPosition(v)).getStream_url();
                 configureTheoPlayer(channelList.get(mRecyclerView.getChildAdapterPosition(v)).getStream_url());
+
 
             }
         });
