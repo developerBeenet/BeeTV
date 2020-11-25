@@ -89,11 +89,12 @@ public class PlayerActivity extends AppCompatActivity {
     ConstraintLayout mainLayout, menuLateral;
 
     /* ProgressBar */
+    /*
     private ProgressBar progressBar;
     private int progressStatus = 0;
     private int duration; //Suponiendo en seg
-
     private Handler handler = new Handler();
+     */
 
     /* Categories */
     Spinner sp_categorias;
@@ -117,7 +118,7 @@ public class PlayerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
 
-        /* --- */
+
         //Recuperando valor enviado proveniente de LoginActivityTV
         Bundle myBundle = this.getIntent().getExtras();
         if (myBundle != null){
@@ -129,6 +130,7 @@ public class PlayerActivity extends AppCompatActivity {
         playerViewModel = ViewModelProviders.of(this).get(PlayerViewModel.class);
 
         /** Progress Bar animation**/
+        /*
         duration = 200;
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         progressBar.setMax(duration);
@@ -201,11 +203,10 @@ public class PlayerActivity extends AppCompatActivity {
         
         // Creating a SourceDescription builder that contains the settings to be applied as a new
         // THEOplayer source.
-        /*
+        /*  Muestra banner entre cambio de canal
         SourceDescription.Builder sourceDescription = sourceDescription(typedSource)
                 .poster(getString(R.string.defaultPosterUrl));
          */
-
         SourceDescription.Builder sourceDescription = sourceDescription(typedSource)
                 .poster("@drawable/theoplayer_logo.jpg");
 
@@ -223,21 +224,18 @@ public class PlayerActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        //viewBinding.theoPlayerView.onPause();
         theoplayerView.onPause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        //viewBinding.theoPlayerView.onResume();
         theoplayerView.onResume();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //viewBinding.theoPlayerView.onDestroy();
         theoplayerView.onDestroy();
     }
 
@@ -259,9 +257,6 @@ public class PlayerActivity extends AppCompatActivity {
         mainLayout = (ConstraintLayout) findViewById(R.id.mainLayout);
         menuLateral = (ConstraintLayout) findViewById(R.id.menuLateral);
 
-        //ProgressBar de Programm EPG
-        //progressProgram = (ProgressBar) findViewById(R.id.progressProgram);
-        //progressAnimator = ObjectAnimator.ofInt(progressProgram,"progress",0,100);
     }
 
     public void getPopularChannel(String filter) {
@@ -292,7 +287,6 @@ public class PlayerActivity extends AppCompatActivity {
             public void onClick(View v) {
                 stream = channelList.get(mRecyclerView.getChildAdapterPosition(v)).getStream_url();
                 configureTheoPlayer(channelList.get(mRecyclerView.getChildAdapterPosition(v)).getStream_url());
-
 
             }
         });
@@ -354,7 +348,6 @@ public class PlayerActivity extends AppCompatActivity {
             case KeyEvent.KEYCODE_BACK:
                 handled = true;
                 //Llamar a la funcion cerrar sesion
-
                 AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogCustom);
                 builder.setMessage("Quieres salir de la Aplicacion?");
                 builder.setTitle("Salir");
@@ -374,28 +367,6 @@ public class PlayerActivity extends AppCompatActivity {
 
                 AlertDialog dialog = builder.create();
                 dialog.show();
-
-
-                /*
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                LayoutInflater inflater = getLayoutInflater();
-                View view = inflater.inflate(R.layout.dialog_custom,null);
-                builder.setView(view);
-
-                AlertDialog dialog = builder.create();
-                dialog.show();
-
-                TextView txt = view.findViewById(R.id.text_dialog);
-                txt.setText("Cerrar Sesion?");
-                Button btnSi = view.findViewById(R.id.btnConfirm);
-                btnSi.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
-                */
 
                 break;
         }
@@ -433,7 +404,6 @@ public class PlayerActivity extends AppCompatActivity {
                 LoginResponse loginResponse = response.body();
                 if (loginResponse.getStatus_code() == 200){
 
-                    //Toast.makeText(getApplicationContext(),"Sesion Finalizada",Toast.LENGTH_LONG).show();
                     new StyleableToast
                             .Builder(getApplicationContext())
                             .text("SESION FINALIZADA")
@@ -441,14 +411,10 @@ public class PlayerActivity extends AppCompatActivity {
                             .textColor(Color.BLACK)
                             .backgroundColor(Color.rgb(255,112,0))
                             .show();
-                    //Volver a Inicio de Sesion
-                    //Intent intent = new Intent (getApplicationContext(), LoginActivityTV.class);
-                    //startActivityForResult(intent, 0);
 
                     finish();
 
                 }else{
-                    //Toast.makeText(getApplicationContext(), loginResponse.getError_description(), Toast.LENGTH_LONG).show();
                     new StyleableToast
                             .Builder(getApplicationContext())
                             .text(loginResponse.getError_description())
@@ -460,7 +426,7 @@ public class PlayerActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
-                //Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+
                 new StyleableToast
                         .Builder(getApplicationContext())
                         .text(t.getMessage())

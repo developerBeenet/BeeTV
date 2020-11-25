@@ -29,10 +29,11 @@ public class ChannelAdapter extends RecyclerView.Adapter<BaseViewHolder>
     private String genero;
 
     //Progresive Bar
+    /*
     private int duration;
     private int progressStatus = 0;
     private Handler handler = new Handler();
-
+    */
 
     public ChannelAdapter(List<Channel> channelList,List<Category> categoryList) {
         mChannelList = channelList;
@@ -91,8 +92,9 @@ public class ChannelAdapter extends RecyclerView.Adapter<BaseViewHolder>
         TextView tvCategory;
         TextView tvUrl;
         LinearLayout linearLayout;
+        /*
         ProgressBar progress_Bar;
-
+        */
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -100,9 +102,10 @@ public class ChannelAdapter extends RecyclerView.Adapter<BaseViewHolder>
             tvName = itemView.findViewById(R.id.nombre_canal);
             tvCategory = itemView.findViewById(R.id.cat_canal);
             tvUrl = itemView.findViewById(R.id.url_canal);
-            progress_Bar = (ProgressBar) itemView.findViewById(R.id.progress_Bar);
+            //progress_Bar = (ProgressBar) itemView.findViewById(R.id.progress_Bar);
 
-            /* Logica Barra de Progreso */
+            /* Barra de Progreso Panel de canales*/
+            /*
             duration = 200;
             progress_Bar.setMax(duration); //Valor maximo del medidor
             // Start long running operation in a background thread
