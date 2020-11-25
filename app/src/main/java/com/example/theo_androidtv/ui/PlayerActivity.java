@@ -96,8 +96,7 @@ public class PlayerActivity extends AppCompatActivity {
 
     THEOplayerView theoplayerView;
     Player player;
-
-
+    
     public String stream = " ";
     String auth, id_category = "0";
 
@@ -136,7 +135,6 @@ public class PlayerActivity extends AppCompatActivity {
         configureTheoPlayer(stream);
 
     }
-
 
     private void configureTheoPlayer(String url) {
         // Creating a TypedSource builder that defines the location of a single stream source
