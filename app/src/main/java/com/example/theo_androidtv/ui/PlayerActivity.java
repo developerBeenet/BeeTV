@@ -108,11 +108,7 @@ public class PlayerActivity extends AppCompatActivity {
 
     THEOplayerView theoplayerView;
     Player player;
-<<<<<<< HEAD
-    
-=======
 
->>>>>>> Dev_change
     public String stream = " ";
     String auth, id_category = "0";
 
