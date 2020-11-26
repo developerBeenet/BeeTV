@@ -122,8 +122,8 @@ public class LoginActivity extends Activity {
                             .Builder(getApplicationContext())
                             .text("SESION INICIADA")
                             .textSize(16)
-                            .textColor(Color.BLACK)
-                            .iconStart(R.drawable.ic_error)
+                            .textColor(Color.WHITE)
+                            .iconStart(R.drawable.ic_login_user)
                             .backgroundColor(Color.rgb(255,112,0))
                             .show();
 
@@ -135,11 +135,10 @@ public class LoginActivity extends Activity {
                     startActivityForResult(intent, 0);
 
                 }else{
-                   // Toast.makeText(getApplicationContext(), loginResponse.getError_description(), Toast.LENGTH_LONG).show();
-                    new StyleableToast
+                   new StyleableToast
                             .Builder(getApplicationContext())
                             .text(loginResponse.getError_description())
-                            .textColor(Color.BLACK)
+                            .textColor(Color.WHITE)
                             .iconStart(R.drawable.ic_error)
                             .backgroundColor(Color.rgb(255,112,0))
                             .show();
@@ -152,7 +151,8 @@ public class LoginActivity extends Activity {
                 new StyleableToast
                         .Builder(getApplicationContext())
                         .text(t.getMessage())
-                        .textColor(Color.BLACK)
+                        .textColor(Color.WHITE)
+                        .iconStart(R.drawable.ic_error)
                         .backgroundColor(Color.rgb(255,112,0))
                         .show();
             }

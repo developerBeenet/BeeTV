@@ -408,7 +408,8 @@ public class PlayerActivity extends AppCompatActivity {
                             .Builder(getApplicationContext())
                             .text("SESION FINALIZADA")
                             .textSize(16)
-                            .textColor(Color.BLACK)
+                            .textColor(Color.WHITE)
+                            .iconStart(R.drawable.ic_salir)
                             .backgroundColor(Color.rgb(255,112,0))
                             .show();
 
@@ -418,7 +419,8 @@ public class PlayerActivity extends AppCompatActivity {
                     new StyleableToast
                             .Builder(getApplicationContext())
                             .text(loginResponse.getError_description())
-                            .textColor(Color.BLACK)
+                            .textColor(Color.WHITE)
+                            .iconStart(R.drawable.ic_error)
                             .backgroundColor(Color.rgb(255,112,0))
                             .show();
                 }
@@ -430,7 +432,8 @@ public class PlayerActivity extends AppCompatActivity {
                 new StyleableToast
                         .Builder(getApplicationContext())
                         .text(t.getMessage())
-                        .textColor(Color.BLACK)
+                        .textColor(Color.WHITE)
+                        .iconStart(R.drawable.ic_error)
                         .backgroundColor(Color.rgb(255,112,0))
                         .show();
             }
