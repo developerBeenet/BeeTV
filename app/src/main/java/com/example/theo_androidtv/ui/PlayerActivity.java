@@ -58,6 +58,7 @@ import com.muddzdev.styleabletoast.StyleableToast;
 import com.theoplayer.android.api.THEOplayerView;
 import com.theoplayer.android.api.abr.AbrStrategyConfiguration;
 import com.theoplayer.android.api.abr.AbrStrategyType;
+import com.theoplayer.android.api.ads.AdsConfiguration;
 import com.theoplayer.android.api.event.player.PlayerEventTypes;
 import com.theoplayer.android.api.event.track.mediatrack.video.list.VideoTrackListEventTypes;
 import com.theoplayer.android.api.event.track.texttrack.list.TextTrackListEventTypes;
@@ -70,6 +71,7 @@ import com.theoplayer.android.api.source.SourceDescription;
 import com.theoplayer.android.api.source.SourceType;
 import com.theoplayer.android.api.source.TypedSource;
 import com.example.theo_androidtv.databinding.ActivityMainBindingImpl;
+import com.theoplayer.android.api.source.addescription.THEOplayerAdDescription;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -112,6 +114,7 @@ public class PlayerActivity extends AppCompatActivity {
 
     public String stream = " ";
     String auth, id_category = "0";
+    public boolean ads = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -183,15 +186,18 @@ public class PlayerActivity extends AppCompatActivity {
         //   .drm(drmConfiguration.build());
 
         if(url == " "){
+            ads = true;
             url = "https://xcdrsbsv-a.beenet.com.sv/abr_foxnews/abr_foxnews_out/playlist.m3u8";
         }
 
+        /* CARGA CANAL */
         TypedSource typedSource = TypedSource.Builder
                 .typedSource()
                 .src(url)
                 .type(SourceType.HLS)
                 .build();
 
+        /* ABR */
         AbrStrategyConfiguration abrConfig = AbrStrategyConfiguration.Builder
                 .abrStrategyConfiguration()
                 .setType(AbrStrategyType.PERFORMANCE)
@@ -203,12 +209,22 @@ public class PlayerActivity extends AppCompatActivity {
         
         // Creating a SourceDescription builder that contains the settings to be applied as a new
         // THEOplayer source.
-        /*  Muestra banner entre cambio de canal
-        SourceDescription.Builder sourceDescription = sourceDescription(typedSource)
-                .poster(getString(R.string.defaultPosterUrl));
-         */
-        SourceDescription.Builder sourceDescription = sourceDescription(typedSource)
-                .poster("@drawable/theoplayer_logo.jpg");
+
+        SourceDescription.Builder sourceDescription = sourceDescription(typedSource);
+                //.poster(getString(R.string.poster));
+
+        if(ads == true){
+            sourceDescription
+                    .poster(getString(R.string.poster))
+                    .ads(
+                        // Inserting linear pre-roll ad defined with VAST standard.
+                        THEOplayerAdDescription.Builder
+                            .adDescription(getString(R.string.ads_video))
+                            .timeOffset("start")
+                            .build()
+                    );
+            ads = false;
+        }
 
         //Setting the source to the player
         player.setSource(sourceDescription.build());

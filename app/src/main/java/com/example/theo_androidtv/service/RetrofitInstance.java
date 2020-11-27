@@ -12,7 +12,7 @@ public class RetrofitInstance {
 
             retrofit = new Retrofit
                     .Builder()
-                    .baseUrl("http://mago.beenet.com.sv/")
+                    .baseUrl("https://mago.beenet.com.sv:4433/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
 
