@@ -19,8 +19,7 @@
             android:background="@color/THEOYellow"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:chromeless="true">
-        </com.theoplayer.android.api.THEOplayerView>
+            app:chromeless="true"/>
 
         <!--
         <ProgressBar
@@ -53,6 +52,7 @@
 
         <!-- Spinner Categorias-->
         <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginStart="20dp"
@@ -80,11 +80,11 @@
             android:id="@+id/linearlayoutRecycler"
             android:defaultFocusHighlightEnabled="true"
             android:layout_width="match_parent"
-            android:layout_height="450dp"
+            android:layout_height="400dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="60dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.52"
@@ -105,7 +105,7 @@
                 </androidx.recyclerview.widget.RecyclerView>
 
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
+            
             <!--
             <ListView
                 android:id="@+id/lista_canales"
@@ -114,7 +114,34 @@
                 tools:listitem="@layout/elemento_lista"
                 tools:visibility="visible" />
             -->
+
         </LinearLayout>
+
+        <!-- Spinner Categorias-->
+        <LinearLayout
+            android:id="@+id/linearLayoutClock"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="484dp"
+            android:layout_marginEnd="20dp"
+            android:background="@color/transparent_2"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+           <TextView
+               android:id="@+id/txt_clock"
+               android:layout_width="match_parent"
+               android:layout_height="35dp"
+               android:textSize="22dp"
+               android:textColor="@color/THEOWhite"
+               android:textAlignment="center"/>
+
+        </LinearLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

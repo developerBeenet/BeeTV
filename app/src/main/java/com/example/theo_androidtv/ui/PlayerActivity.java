@@ -6,6 +6,7 @@ import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -74,6 +75,7 @@ import com.example.theo_androidtv.databinding.ActivityMainBindingImpl;
 import com.theoplayer.android.api.source.addescription.THEOplayerAdDescription;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -89,6 +91,17 @@ public class PlayerActivity extends AppCompatActivity {
 
     DrawerLayout drawerLayout; //Permite el despliegue de menu lateral en conjunto con mainLayout y menuLateral
     ConstraintLayout mainLayout, menuLateral;
+
+    /* Clock */
+    TextView tHora;
+    int hora=0, minuto =0, segundo = 0;
+    Intent i;
+    Thread iniReloj = null;
+    Runnable r;
+    boolean isUpdate = false;
+    String sec, min, hor;
+    String curTime;
+    /* */
 
     /* ProgressBar */
     /*
@@ -108,7 +121,6 @@ public class PlayerActivity extends AppCompatActivity {
     ChannelAdapter mChannelAdapter;
 
     public PlayerViewModel playerViewModel;
-
     THEOplayerView theoplayerView;
     Player player;
 
@@ -131,6 +143,12 @@ public class PlayerActivity extends AppCompatActivity {
         /** Inicializando de elementos Visuales **/
         initializationViews();
         playerViewModel = ViewModelProviders.of(this).get(PlayerViewModel.class);
+
+        /** Metodos que controlan la hora**/
+        r = new RefreshClock();
+        iniReloj= new Thread(r);
+        iniReloj.start();
+        //tHora.setText("00:00:00");
 
         /** Progress Bar animation**/
         /*
@@ -212,7 +230,7 @@ public class PlayerActivity extends AppCompatActivity {
 
         SourceDescription.Builder sourceDescription = sourceDescription(typedSource);
                 //.poster(getString(R.string.poster));
-
+        //Agrega anuncio una vez al iniciar sesion
         if(ads == true){
             sourceDescription
                     .poster(getString(R.string.poster))
@@ -272,6 +290,9 @@ public class PlayerActivity extends AppCompatActivity {
         //Contenedor MainLayout y MenuLateral
         mainLayout = (ConstraintLayout) findViewById(R.id.mainLayout);
         menuLateral = (ConstraintLayout) findViewById(R.id.menuLateral);
+
+        //Textview Reloj
+        tHora = findViewById(R.id.txt_clock);
 
     }
 
@@ -455,5 +476,134 @@ public class PlayerActivity extends AppCompatActivity {
             }
         });
     }
+
+
+    /** ---------  Metodos para Reloj  ---------- **/
+
+    /**
+     Esta clase hace uso de la interface Runnable la cual es la encargada de estar
+     refrescando cada 1000 milisegundos es decir, un segudo, no tiene gran ciencia
+
+
+     @SuppressWarnings("unused") es para decirle al compilador que obvie la advertencia
+     que se genera, pero la verdad no afecta en nada el funcionamiento del mismo
+     */
+    class RefreshClock implements Runnable{
+        // @Override
+        @SuppressWarnings("unused")
+        public void run() {
+            while(!Thread.currentThread().isInterrupted()){
+                try {
+                    initClock();
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }catch(Exception e){
+                }
+            }
+        }
+    }
+
+
+    /**
+     basicamente es el que hace el limpiado del layout cada segundo, un simple if es el
+     que identifica si se ah actualizado la hora desde ajustes oh si tiene que seguir
+     mostrando la hora actual
+
+     isUpdate muestra el valor que se envio de la  clase Ajustes
+     */
+    private void initClock() {
+        runOnUiThread(new Runnable() {
+            public void run() {
+                try{
+
+                    if(isUpdate){
+                        settingNewClock();
+                    } else {
+                        updateTime();
+                    }
+                    curTime =hor+ hora + min + minuto + sec + segundo;
+                    tHora.setText(curTime);
+
+                }catch (Exception e) {}
+            }
+        });
+    }
+
+    /**
+     Que puedo decir de este metodo mas que es el encargado de parsear la hora de una
+     manera que al llegar a 24:59:59 esta retome los valores de 00:00:00 aunque en la practica
+     como mencionaba en un comentario anterior esta se pone en 0:0:0, pero luego se restaura a
+     00:00:01
+     */
+    private void settingNewClock(){
+        segundo +=1;
+
+        setZeroClock();
+
+        if(segundo >=0 & segundo <=59){
+
+        }else {
+            segundo = 0;
+            minuto +=1;
+        }
+        if(minuto >=0 & minuto <=59){
+
+        }else{
+            minuto = 0;
+            hora +=1;
+        }
+        if(hora >= 0 & hora <= 24){
+
+        }else{
+            hora = 0;
+        }
+
+    }
+
+    /**
+     Este es el metodo inicial del reloj, a partir de el es que se muestra la hora
+     cada segundo es la encargada Java.Util.Calendar
+
+     */
+    private void updateTime(){
+
+        Calendar c = Calendar.getInstance();
+        hora = c.get(Calendar.HOUR_OF_DAY);
+        minuto = c.get(Calendar.MINUTE);
+        segundo = c.get(Calendar.SECOND);
+        setZeroClock();
+
+    }
+
+    /**
+     setZeroClock es para que se nos ponga el numero 0 en aquellos valores menores a
+     10, pero no he podido resolver un pequeño inconveniente al momento de la llegada
+     de 0:0:0 y por ende en sus derivadas, aunque no es por falta de logica, he revisado
+     muy bien, pero si le encuentran arreglo me hacen el favor y me avisan de como
+     solucionarlo
+     */
+    private void setZeroClock(){
+        if(hora >=0 & hora <=9){
+            hor = "0";
+        }else{
+            hor = "";
+        }
+
+        if(minuto >=0 & minuto <=9){
+            min = ":0";
+        }else{
+            min = ":";
+        }
+
+        if(segundo >=0 & segundo <=9){
+            sec = ":0";
+
+        }else{
+            sec = ":";
+        }
+    }
+
+    /** ----- Fin Metodo Reloj ----- **/
 
 }
