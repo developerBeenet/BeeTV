@@ -481,13 +481,7 @@ public class PlayerActivity extends AppCompatActivity {
     /** ---------  Metodos para Reloj  ---------- **/
 
     /**
-     Esta clase hace uso de la interface Runnable la cual es la encargada de estar
-     refrescando cada 1000 milisegundos es decir, un segudo, no tiene gran ciencia
-
-
-     @SuppressWarnings("unused") es para decirle al compilador que obvie la advertencia
-     que se genera, pero la verdad no afecta en nada el funcionamiento del mismo
-     */
+     Esta clase es la encargada de estar de actualizar cada 1000 milisegundos es decir, un segudo. **/
     class RefreshClock implements Runnable{
         // @Override
         @SuppressWarnings("unused")
@@ -506,11 +500,8 @@ public class PlayerActivity extends AppCompatActivity {
 
 
     /**
-     basicamente es el que hace el limpiado del layout cada segundo, un simple if es el
-     que identifica si se ah actualizado la hora desde ajustes oh si tiene que seguir
-     mostrando la hora actual
-
-     isUpdate muestra el valor que se envio de la  clase Ajustes
+     Metodo limpia el layout cada segundo, un if es el que identifica si se ha actualizado la hora
+     o seguir  mostrando la hora actual
      */
     private void initClock() {
         runOnUiThread(new Runnable() {
@@ -532,9 +523,7 @@ public class PlayerActivity extends AppCompatActivity {
 
     /**
      Que puedo decir de este metodo mas que es el encargado de parsear la hora de una
-     manera que al llegar a 24:59:59 esta retome los valores de 00:00:00 aunque en la practica
-     como mencionaba en un comentario anterior esta se pone en 0:0:0, pero luego se restaura a
-     00:00:01
+     manera que al llegar a 24:59:59 esta retome los valores de 00:00:00.
      */
     private void settingNewClock(){
         segundo +=1;
@@ -564,7 +553,6 @@ public class PlayerActivity extends AppCompatActivity {
     /**
      Este es el metodo inicial del reloj, a partir de el es que se muestra la hora
      cada segundo es la encargada Java.Util.Calendar
-
      */
     private void updateTime(){
 
@@ -577,11 +565,7 @@ public class PlayerActivity extends AppCompatActivity {
     }
 
     /**
-     setZeroClock es para que se nos ponga el numero 0 en aquellos valores menores a
-     10, pero no he podido resolver un pequeño inconveniente al momento de la llegada
-     de 0:0:0 y por ende en sus derivadas, aunque no es por falta de logica, he revisado
-     muy bien, pero si le encuentran arreglo me hacen el favor y me avisan de como
-     solucionarlo
+     setZeroClock es para que se nos ponga el numero 0.
      */
     private void setZeroClock(){
         if(hora >=0 & hora <=9){
@@ -604,6 +588,6 @@ public class PlayerActivity extends AppCompatActivity {
         }
     }
 
-    /** ----- Fin Metodo Reloj ----- **/
+    /** ----- Fin Metodos Reloj ----- **/
 
 }

@@ -17,6 +17,7 @@ public class RetrofitInstance {
                     .build();
 
         }
+
         return retrofit.create(RestApiService.class);
 
     }
