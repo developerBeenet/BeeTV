@@ -51,7 +51,7 @@
             android:id="@+id/txtPassword"
             android:layout_width="260dp"
             android:layout_height="41dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="16dp"
             android:background="@drawable/custom_input"
             android:drawableStart="@drawable/custom_lock_icon"
             android:drawablePadding="12dp"
@@ -61,7 +61,7 @@
             android:paddingStart="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintHorizontal_bias="0.49"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtUser"
             app:layout_constraintVertical_bias="0.0" />
@@ -78,10 +78,21 @@
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtPassword"
-            app:layout_constraintVertical_bias="0.143" />
+            app:layout_constraintVertical_bias="0.652" />
+
+        <CheckBox
+            android:id="@+id/cb_Remember"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Recordar"
+            app:layout_constraintBottom_toTopOf="@+id/btnLogin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.188"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtPassword"
+            app:layout_constraintVertical_bias="0.312" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import com.muddzdev.styleabletoast.StyleableToast;
 import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -42,9 +44,13 @@ import retrofit2.Response;
 public class LoginActivity extends Activity {
 
     EditText user,pass;
+    CheckBox remember;
     public String username, password,data,auth,timestamp;
     long x;
+    public boolean isChecked, isRemember = false;
     Button btnLogin;
+
+    SharedPreferences sharedPreferences;
 
     static final String APP_ID = "1";
     static final String BOX_ID = "123456789";
@@ -62,7 +68,21 @@ public class LoginActivity extends Activity {
         //Referenciando variables con Formulario
         user = findViewById(R.id.txtUser);
         pass = findViewById(R.id.txtPassword);
+        remember = findViewById(R.id.cb_Remember);
         btnLogin = findViewById(R.id.btnLogin);
+
+        //Shared Preference para guardar Credenciales de inicio de sesion; MODE PRIVATE solo la app tiene acceso a los datos
+        sharedPreferences = getSharedPreferences("SHARED_PREF",MODE_PRIVATE);
+
+        //Obtener valor de Checkbox de 'Recordar'
+        isRemember = sharedPreferences.getBoolean("CHECKBOX",false);
+
+        //Si Checkbox es true; setea los campos de formulario
+        if(isRemember){
+            user.setText(sharedPreferences.getString("USERNAME",""));
+            pass.setText(sharedPreferences.getString("PASSWORD",""));
+            remember.setChecked(isRemember);
+        }
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
@@ -72,6 +92,7 @@ public class LoginActivity extends Activity {
                 //Recuperando Valores de Formulario
                 username = user.getText().toString();
                 password = pass.getText().toString();
+                isChecked = remember.isChecked();
 
                 x = System.currentTimeMillis();
                 timestamp = Long.toString(x);
@@ -93,7 +114,6 @@ public class LoginActivity extends Activity {
 
                 //Llamando a la API para Login
                 postDataLogin(auth);
-
             }
         });
     }
@@ -116,9 +136,27 @@ public class LoginActivity extends Activity {
                 LoginResponse loginResponse = response.body();
                 if (loginResponse.getStatus_code() == 200){
 
-                    //System.out.println("ERROR: " + loginResponse.getError_description());
+                    if (isChecked){
 
-                   new StyleableToast
+                        // Guardando los valores en Archivo SharedPreference
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("USERNAME",username);
+                        editor.putString("PASSWORD",password);
+                        editor.putBoolean("CHECKBOX",isChecked);
+                        editor.apply();
+
+                        Toast.makeText(getApplicationContext(),"DATOS GUARDADOS EN MEMORIA",Toast.LENGTH_LONG).show();
+
+                    }/*else{
+                        Toast.makeText(getApplicationContext(),"Se eliminara Credenciales.",Toast.LENGTH_LONG).show();
+                        //Borrar archivo de sharedPreferences
+                        SharedPreferences.Editor editor = getSharedPreferences("SHARED_PREF",MODE_PRIVATE).edit();
+                        editor.clear();
+                        editor.apply();
+                    }*/
+
+                    //Mensaje de Exito de inicio de Sesion
+                    new StyleableToast
                             .Builder(getApplicationContext())
                             .text("SESION INICIADA")
                             .textSize(16)
@@ -135,7 +173,8 @@ public class LoginActivity extends Activity {
                     startActivityForResult(intent, 0);
 
                 }else{
-                   new StyleableToast
+
+                    new StyleableToast
                             .Builder(getApplicationContext())
                             .text(loginResponse.getError_description())
                             .textColor(Color.WHITE)
@@ -148,6 +187,7 @@ public class LoginActivity extends Activity {
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
                // Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+
                 new StyleableToast
                         .Builder(getApplicationContext())
                         .text(t.getMessage())
@@ -157,6 +197,7 @@ public class LoginActivity extends Activity {
                         .show();
             }
         });
+
     }
 
     /**
