@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.theo_androidtv"
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -48,6 +48,7 @@ dependencies {
     // Skip this if you don't want to use integration libraries or configure Glide.
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
     /* -- */
+    implementation "androidx.security:security-crypto:1.0.0-alpha02"
     implementation 'com.muddzdev:styleabletoast:2.2.4'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

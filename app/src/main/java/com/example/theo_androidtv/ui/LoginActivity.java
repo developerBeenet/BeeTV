@@ -25,7 +25,9 @@ import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -37,6 +39,9 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import androidx.security.crypto.EncryptedSharedPreferences;
+import androidx.security.crypto.MasterKeys;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -46,6 +51,7 @@ public class LoginActivity extends Activity {
     EditText user,pass;
     CheckBox remember;
     public String username, password,data,auth,timestamp;
+    String encriptar = null;
     long x;
     public boolean isChecked, isRemember = false;
     Button btnLogin;
@@ -71,8 +77,34 @@ public class LoginActivity extends Activity {
         remember = findViewById(R.id.cb_Remember);
         btnLogin = findViewById(R.id.btnLogin);
 
+        //Preparando para encriptar Datos de SharedPreferences
+        try {
+            //MasterKeys de Android para crear varios Strings encriptado con el formato AES256_GCM_SPEC, luego lo coloco dentro la variable sharedPreferences
+            encriptar = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
+        } catch (GeneralSecurityException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+         try {
+            sharedPreferences = EncryptedSharedPreferences.create(
+                    "SHARED_PREF",
+                    encriptar,
+                    this,
+                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+            );
+        } catch (GeneralSecurityException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         //Shared Preference para guardar Credenciales de inicio de sesion; MODE PRIVATE solo la app tiene acceso a los datos
-        sharedPreferences = getSharedPreferences("SHARED_PREF",MODE_PRIVATE);
+        //sharedPreferences = getSharedPreferences("SHARED_PREF",MODE_PRIVATE);
+
 
         //Obtener valor de Checkbox de 'Recordar'
         isRemember = sharedPreferences.getBoolean("CHECKBOX",false);
@@ -145,10 +177,10 @@ public class LoginActivity extends Activity {
                         editor.putBoolean("CHECKBOX",isChecked);
                         editor.apply();
 
-                        Toast.makeText(getApplicationContext(),"DATOS GUARDADOS EN MEMORIA",Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getApplicationContext(),"DATOS GUARDADOS EN MEMORIA",Toast.LENGTH_LONG).show();
 
                     }else{
-                        Toast.makeText(getApplicationContext(),"Se eliminara Credenciales.",Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getApplicationContext(),"Se eliminara Credenciales.",Toast.LENGTH_LONG).show();
                         //Borrar archivo de sharedPreferences
                         SharedPreferences.Editor editor = getSharedPreferences("SHARED_PREF",MODE_PRIVATE).edit();
                         editor.clear();
