@@ -147,13 +147,13 @@ public class LoginActivity extends Activity {
 
                         Toast.makeText(getApplicationContext(),"DATOS GUARDADOS EN MEMORIA",Toast.LENGTH_LONG).show();
 
-                    }/*else{
+                    }else{
                         Toast.makeText(getApplicationContext(),"Se eliminara Credenciales.",Toast.LENGTH_LONG).show();
                         //Borrar archivo de sharedPreferences
                         SharedPreferences.Editor editor = getSharedPreferences("SHARED_PREF",MODE_PRIVATE).edit();
                         editor.clear();
                         editor.apply();
-                    }*/
+                    }
 
                     //Mensaje de Exito de inicio de Sesion
                     new StyleableToast

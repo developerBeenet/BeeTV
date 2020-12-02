@@ -86,7 +86,7 @@
             android:id="@+id/cb_Remember"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Recordar"
+            android:text="Recordar Usuario"
             app:layout_constraintBottom_toTopOf="@+id/btnLogin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.188"
