@@ -347,7 +347,21 @@ public class PlayerActivity extends AppCompatActivity {
     private void prepareSpinnerCategories(List<Category> categoryList){
 
         cat = categoryList;
-        categoryList.set(0,new Category(0,"Todos"));
+        categoryList.set(cat.size()-1,new Category(0,"Todos"));
+        System.out.println("***********************************************************************");
+        System.out.println(categoryList.get(0));
+        System.out.println(categoryList.get(1));
+        System.out.println(categoryList.get(2));
+        System.out.println(categoryList.get(3));
+        System.out.println(categoryList.get(4));
+        System.out.println(categoryList.get(5));
+        System.out.println(categoryList.get(6));
+        System.out.println(categoryList.get(7));
+        //System.out.println(categoryList.get(8));
+        System.out.println(categoryList.size());
+        System.out.println("*************************************************");
+
+
 
         ArrayAdapter<Category> arrayAdapter = new ArrayAdapter<>(getApplicationContext(),
                 R.layout.category_item, categoryList);
