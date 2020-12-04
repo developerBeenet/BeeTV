@@ -74,6 +74,7 @@ import com.theoplayer.android.api.source.TypedSource;
 import com.example.theo_androidtv.databinding.ActivityMainBindingImpl;
 import com.theoplayer.android.api.source.addescription.THEOplayerAdDescription;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -94,12 +95,12 @@ public class PlayerActivity extends AppCompatActivity {
 
     /* Clock */
     TextView tHora;
-    int hora=0, minuto =0, segundo = 0;
+    int hora=0, minuto =0, segundo = 0, am_pm;
     Intent i;
     Thread iniReloj = null;
     Runnable r;
     boolean isUpdate = false;
-    String sec, min, hor;
+    String sec, min, hor, marca;
     String curTime;
     /* */
 
@@ -498,7 +499,6 @@ public class PlayerActivity extends AppCompatActivity {
         }
     }
 
-
     /**
      Metodo limpia el layout cada segundo, un if es el que identifica si se ha actualizado la hora
      o seguir  mostrando la hora actual
@@ -507,13 +507,13 @@ public class PlayerActivity extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             public void run() {
                 try{
-
                     if(isUpdate){
                         settingNewClock();
                     } else {
                         updateTime();
                     }
-                    curTime =hor+ hora + min + minuto + sec + segundo;
+                    //curtime = 0 + hora + 0 + minuto + 0 + segundo + " " + AM/PM
+                    curTime = hor + hora + min + minuto + sec + segundo + " "+marca;
                     tHora.setText(curTime);
 
                 }catch (Exception e) {}
@@ -522,7 +522,7 @@ public class PlayerActivity extends AppCompatActivity {
     }
 
     /**
-     Que puedo decir de este metodo mas que es el encargado de parsear la hora de una
+     Este metodo es el encargado de parsear la hora de una
      manera que al llegar a 24:59:59 esta retome los valores de 00:00:00.
      */
     private void settingNewClock(){
@@ -542,11 +542,13 @@ public class PlayerActivity extends AppCompatActivity {
             minuto = 0;
             hora +=1;
         }
-        if(hora >= 0 & hora <= 24){
-
+        /*
+        if(hora >= 0 & hora <= 12){
+            System.out.println("******************************* ******************* SettingNewClock Hora: "+ hora);
         }else{
-            hora = 0;
+            hora = 12;
         }
+         */
 
     }
 
@@ -557,22 +559,38 @@ public class PlayerActivity extends AppCompatActivity {
     private void updateTime(){
 
         Calendar c = Calendar.getInstance();
-        hora = c.get(Calendar.HOUR_OF_DAY);
+        //hora = c.get(Calendar.HOUR_OF_DAY);
+        hora = c.get(Calendar.HOUR);
         minuto = c.get(Calendar.MINUTE);
         segundo = c.get(Calendar.SECOND);
+        am_pm = c.get(Calendar.AM_PM);
+
+        //System.out.println("******************************* ******************* Hora: "+ hora);
+
+        /**
+         * si la marca es PM y hora es 0 que lo cambie a 12;
+         * funcional para la manana 11:59:59 AM -> 00:00:00 PM lo pasa a 12:00:00 PM
+         */
+        if(am_pm == 1 & hora == 0){
+            hora = 12;
+        }
+
         setZeroClock();
+
 
     }
 
     /**
-     setZeroClock es para que se nos ponga el numero 0.
+     setZeroClock es para que se nos ponga el primer 0 a la par.
      */
     private void setZeroClock(){
+
         if(hora >=0 & hora <=9){
             hor = "0";
         }else{
             hor = "";
         }
+
 
         if(minuto >=0 & minuto <=9){
             min = ":0";
@@ -586,6 +604,14 @@ public class PlayerActivity extends AppCompatActivity {
         }else{
             sec = ":";
         }
+
+        if(am_pm == 0){
+            marca = "AM";
+        }else{
+            marca = "PM";
+        }
+
+
     }
 
     /** ----- Fin Metodos Reloj ----- **/
