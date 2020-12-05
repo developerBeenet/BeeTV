@@ -126,14 +126,13 @@ public class PlayerActivity extends AppCompatActivity {
     Player player;
 
     public String stream = " ";
-    String auth, id_category = "0";
+    String auth, id_category = "1";
     public boolean ads = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
-
 
         //Recuperando valor enviado proveniente de LoginActivityTV
         Bundle myBundle = this.getIntent().getExtras();
@@ -149,7 +148,6 @@ public class PlayerActivity extends AppCompatActivity {
         r = new RefreshClock();
         iniReloj= new Thread(r);
         iniReloj.start();
-        //tHora.setText("00:00:00");
 
         /** Progress Bar animation**/
         /*
@@ -228,9 +226,8 @@ public class PlayerActivity extends AppCompatActivity {
         
         // Creating a SourceDescription builder that contains the settings to be applied as a new
         // THEOplayer source.
-
         SourceDescription.Builder sourceDescription = sourceDescription(typedSource);
-                //.poster(getString(R.string.poster));
+
         //Agrega anuncio una vez al iniciar sesion
         if(ads == true){
             sourceDescription
@@ -348,6 +345,7 @@ public class PlayerActivity extends AppCompatActivity {
 
         cat = categoryList;
         categoryList.set(cat.size()-1,new Category(0,"Todos"));
+        /*
         System.out.println("***********************************************************************");
         System.out.println(categoryList.get(0));
         System.out.println(categoryList.get(1));
@@ -360,9 +358,7 @@ public class PlayerActivity extends AppCompatActivity {
         //System.out.println(categoryList.get(8));
         System.out.println(categoryList.size());
         System.out.println("*************************************************");
-
-
-
+        */
         ArrayAdapter<Category> arrayAdapter = new ArrayAdapter<>(getApplicationContext(),
                 R.layout.category_item, categoryList);
 
@@ -494,7 +490,6 @@ public class PlayerActivity extends AppCompatActivity {
 
 
     /** ---------  Metodos para Reloj  ---------- **/
-
     /**
      Esta clase es la encargada de estar de actualizar cada 1000 milisegundos es decir, un segudo. **/
     class RefreshClock implements Runnable{
@@ -578,8 +573,6 @@ public class PlayerActivity extends AppCompatActivity {
         minuto = c.get(Calendar.MINUTE);
         segundo = c.get(Calendar.SECOND);
         am_pm = c.get(Calendar.AM_PM);
-
-        //System.out.println("******************************* ******************* Hora: "+ hora);
 
         /**
          * si la marca es PM y hora es 0 que lo cambie a 12;
