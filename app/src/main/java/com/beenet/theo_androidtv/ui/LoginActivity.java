@@ -1,8 +1,5 @@
-package com.example.theo_androidtv.ui;
+package com.beenet.theo_androidtv.ui;
 
-
-import androidx.annotation.DrawableRes;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,10 +7,10 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import com.example.theo_androidtv.R;
-import com.example.theo_androidtv.model.LoginResponse;
-import com.example.theo_androidtv.service.RestApiService;
-import com.example.theo_androidtv.service.RetrofitInstance;
+import com.beenet.theo_androidtv.R;
+import com.beenet.theo_androidtv.model.LoginResponse;
+import com.beenet.theo_androidtv.service.RestApiService;
+import com.beenet.theo_androidtv.service.RetrofitInstance;
 import com.muddzdev.styleabletoast.StyleableToast;
 
 import android.util.Base64;
@@ -21,7 +18,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 

@@ -1,20 +1,20 @@
-package com.example.theo_androidtv.model;
+package com.beenet.theo_androidtv.model;
 
 import java.util.List;
 
-public class ChannelResponse {
+public class CategoryResponse {
 
     /**
-     * Clase que modela (ChannelResponse + Channel) el objeto JSON de Canales que proviene de API
+     * Clase que modela (CategoriaResponse + categoria) el objeto JSON de Categoria que proviene de API
      * */
     private int status_code;
     private int error_code;
     private int timestamp;
     private String error_description;
     private String extra_data;
-    private List<Channel> response_object;
+    private List<Category> response_object;
 
-    public ChannelResponse(int status_code, int error_code, int timestamp, String error_description, String extra_data, List<Channel> response_object) {
+    public CategoryResponse(int status_code, int error_code, int timestamp, String error_description, String extra_data, List<Category> response_object) {
         this.status_code = status_code;
         this.error_code = error_code;
         this.timestamp = timestamp;
@@ -43,7 +43,7 @@ public class ChannelResponse {
         return extra_data;
     }
 
-    public List<Channel> getResponse_object() {
+    public List<Category> getResponse_object() {
         return response_object;
     }
 

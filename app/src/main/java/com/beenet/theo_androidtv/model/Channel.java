@@ -1,4 +1,4 @@
-package com.example.theo_androidtv.model;
+package com.beenet.theo_androidtv.model;
 
 public class Channel {
 

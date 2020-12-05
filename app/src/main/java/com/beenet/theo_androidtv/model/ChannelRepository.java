@@ -1,11 +1,11 @@
-package com.example.theo_androidtv.model;
+package com.beenet.theo_androidtv.model;
 
 import android.app.Application;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.theo_androidtv.service.RestApiService;
-import com.example.theo_androidtv.service.RetrofitInstance;
+import com.beenet.theo_androidtv.service.RestApiService;
+import com.beenet.theo_androidtv.service.RetrofitInstance;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.example.theo_androidtv.viewmodel;
+package com.beenet.theo_androidtv.viewmodel;
 
 import android.app.Application;
 
@@ -6,10 +6,10 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.example.theo_androidtv.model.Category;
-import com.example.theo_androidtv.model.CategoryRepository;
-import com.example.theo_androidtv.model.Channel;
-import com.example.theo_androidtv.model.ChannelRepository;
+import com.beenet.theo_androidtv.model.Category;
+import com.beenet.theo_androidtv.model.CategoryRepository;
+import com.beenet.theo_androidtv.model.Channel;
+import com.beenet.theo_androidtv.model.ChannelRepository;
 
 import java.util.List;
 

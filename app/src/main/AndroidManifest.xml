@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.theo_androidtv">
+    package="com.beenet.theo_androidtv">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-feature android:name="android.software.leanback"
@@ -17,7 +17,7 @@
         android:usesCleartextTraffic="true"
         android:theme="@style/THEO.Base"
         android:banner="@mipmap/ic_banner_beenet_foreground">
-        <activity android:name=".ui.LoginActivity"
+        <activity android:name="com.beenet.theo_androidtv.ui.LoginActivity"
             android:screenOrientation="userLandscape"
             android:configChanges="orientation|screenSize"
             android:theme="@style/Theme.AppCompat.NoActionBar"
@@ -28,7 +28,7 @@
                 <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.PlayerActivity"
+        <activity android:name="com.beenet.theo_androidtv.ui.PlayerActivity"
             android:screenOrientation="userLandscape"
             android:configChanges="orientation|screenSize"
             android:theme="@style/Theme.AppCompat.NoActionBar"

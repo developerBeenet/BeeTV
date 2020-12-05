@@ -1,21 +1,19 @@
-package com.example.theo_androidtv.ui;
+package com.beenet.theo_androidtv.ui;
 
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.theo_androidtv.model.Category;
-import com.example.theo_androidtv.model.Channel;
-import com.example.theo_androidtv.R;
+import com.beenet.theo_androidtv.model.Category;
+import com.beenet.theo_androidtv.model.Channel;
+import com.beenet.theo_androidtv.R;
 
 import java.util.List;
 

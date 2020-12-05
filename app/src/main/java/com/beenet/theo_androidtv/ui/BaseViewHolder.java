@@ -1,4 +1,4 @@
-package com.example.theo_androidtv.ui;
+package com.beenet.theo_androidtv.ui;
 
 import android.view.View;
 

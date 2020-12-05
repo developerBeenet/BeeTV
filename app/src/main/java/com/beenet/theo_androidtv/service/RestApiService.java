@@ -1,8 +1,8 @@
-package com.example.theo_androidtv.service;
+package com.beenet.theo_androidtv.service;
 
-import com.example.theo_androidtv.model.CategoryResponse;
-import com.example.theo_androidtv.model.ChannelResponse;
-import com.example.theo_androidtv.model.LoginResponse;
+import com.beenet.theo_androidtv.model.CategoryResponse;
+import com.beenet.theo_androidtv.model.ChannelResponse;
+import com.beenet.theo_androidtv.model.LoginResponse;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
