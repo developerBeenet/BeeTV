@@ -1,4 +1,4 @@
-package com.beenet.theo_androidtv.ui;
+package com.beenet.beenetplay_tv.ui;
 
 
 import android.app.Activity;
@@ -7,10 +7,10 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import com.beenet.theo_androidtv.R;
-import com.beenet.theo_androidtv.model.LoginResponse;
-import com.beenet.theo_androidtv.service.RestApiService;
-import com.beenet.theo_androidtv.service.RetrofitInstance;
+import com.beenet.beenetplay_tv.R;
+import com.beenet.beenetplay_tv.model.LoginResponse;
+import com.beenet.beenetplay_tv.service.RestApiService;
+import com.beenet.beenetplay_tv.service.RetrofitInstance;
 import com.muddzdev.styleabletoast.StyleableToast;
 
 import android.util.Base64;
@@ -98,10 +98,7 @@ public class LoginActivity extends Activity {
             e.printStackTrace();
         }
 
-        //Shared Preference para guardar Credenciales de inicio de sesion; MODE PRIVATE solo la app tiene acceso a los datos
-        //sharedPreferences = getSharedPreferences("SHARED_PREF",MODE_PRIVATE);
-
-
+        //Shared Preference para guardar Credenciales de inicio de sesion; MODE PRIVATE solo la app tiene acceso a los dato
         //Obtener valor de Checkbox de 'Recordar'
         isRemember = sharedPreferences.getBoolean("CHECKBOX",false);
 
@@ -141,7 +138,7 @@ public class LoginActivity extends Activity {
                 }
 
                 //Llamando a la API para Login
-                postDataLogin(auth);
+                postDataLogin(auth,isChecked);
             }
         });
     }
@@ -149,7 +146,7 @@ public class LoginActivity extends Activity {
     /**
      * Funcion que envia datos a la API, recibe como paramentro valor encriptado
      * */
-    public void postDataLogin(final String auth){
+    public void postDataLogin(final String auth,boolean isChecked){
 
         //Call<LoginResponse> call = RetrofitClient.getInstance().getApi()
         //      .userLogin(COMPANY_ID,APP_ID,APP_NAME,API_VERSION,APPVERSION,auth);
@@ -197,6 +194,7 @@ public class LoginActivity extends Activity {
                     Intent intent = new Intent (getApplicationContext(), PlayerActivity.class);
                     Bundle myBundle = new Bundle();
                     myBundle.putString("auth",auth);
+                    myBundle.putBoolean("check",isRemember);
                     intent.putExtras(myBundle);
                     startActivityForResult(intent, 0);
 

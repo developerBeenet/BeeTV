@@ -1,4 +1,4 @@
-package com.beenet.theo_androidtv.service;
+package com.beenet.beenetplay_tv.service;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -9,9 +9,6 @@ public class RetrofitInstance {
 
     public static RestApiService getApiService() {
         if (retrofit == null) {
-
-            //https://play.instel.site:4433/
-            //https://mago.beenet.com.sv:4433/
 
             retrofit = new Retrofit
                     .Builder()

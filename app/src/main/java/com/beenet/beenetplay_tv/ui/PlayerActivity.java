@@ -1,7 +1,8 @@
-package com.beenet.theo_androidtv.ui;
+package com.beenet.beenetplay_tv.ui;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -27,14 +28,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 
-import com.beenet.theo_androidtv.R;
-//import com.example.theo_androidtv.databinding.ActivityMainBinding;
-import com.beenet.theo_androidtv.model.Category;
-import com.beenet.theo_androidtv.model.Channel;
-import com.beenet.theo_androidtv.model.LoginResponse;
-import com.beenet.theo_androidtv.service.RestApiService;
-import com.beenet.theo_androidtv.service.RetrofitInstance;
-import com.beenet.theo_androidtv.viewmodel.PlayerViewModel;
+import com.beenet.beenetplay_tv.R;
+
+import com.beenet.beenetplay_tv.model.Category;
+import com.beenet.beenetplay_tv.model.Channel;
+import com.beenet.beenetplay_tv.model.LoginResponse;
+import com.beenet.beenetplay_tv.service.RestApiService;
+import com.beenet.beenetplay_tv.service.RetrofitInstance;
+import com.beenet.beenetplay_tv.viewmodel.PlayerViewModel;
 import com.muddzdev.styleabletoast.StyleableToast;
 import com.theoplayer.android.api.THEOplayerView;
 import com.theoplayer.android.api.abr.AbrStrategyConfiguration;
@@ -66,7 +67,8 @@ public class PlayerActivity extends AppCompatActivity {
     Intent i;
     Thread iniReloj = null;
     Runnable r;
-    boolean isUpdate = false;
+    public boolean isUpdate = false, check = false;
+
     String sec, min, hor, marca;
     String curTime;
     /* */
@@ -105,6 +107,7 @@ public class PlayerActivity extends AppCompatActivity {
         Bundle myBundle = this.getIntent().getExtras();
         if (myBundle != null){
             auth = myBundle.getString("auth");
+            check = myBundle.getBoolean("check");
         }
 
         /** Inicializando de elementos Visuales **/
@@ -171,7 +174,7 @@ public class PlayerActivity extends AppCompatActivity {
 
         if(url == " "){
             ads = true;
-            url = "https://xcdrsbsv-a.beenet.com.sv/abr_foxnews/abr_foxnews_out/playlist.m3u8";
+            url = "https://xcdrsbsv-b.beenet.com.sv/abr_local2/abr_local2_out/playlist.m3u8";
         }
 
         /* CARGA CANAL */
@@ -312,20 +315,7 @@ public class PlayerActivity extends AppCompatActivity {
 
         cat = categoryList;
         categoryList.set(cat.size()-1,new Category(0,"Todos"));
-        /*
-        System.out.println("***********************************************************************");
-        System.out.println(categoryList.get(0));
-        System.out.println(categoryList.get(1));
-        System.out.println(categoryList.get(2));
-        System.out.println(categoryList.get(3));
-        System.out.println(categoryList.get(4));
-        System.out.println(categoryList.get(5));
-        System.out.println(categoryList.get(6));
-        System.out.println(categoryList.get(7));
-        //System.out.println(categoryList.get(8));
-        System.out.println(categoryList.size());
-        System.out.println("*************************************************");
-        */
+
         ArrayAdapter<Category> arrayAdapter = new ArrayAdapter<>(getApplicationContext(),
                 R.layout.category_item, categoryList);
 

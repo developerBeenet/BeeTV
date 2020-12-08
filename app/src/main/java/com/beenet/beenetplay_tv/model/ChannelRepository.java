@@ -1,11 +1,11 @@
-package com.beenet.theo_androidtv.model;
+package com.beenet.beenetplay_tv.model;
 
 import android.app.Application;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.beenet.theo_androidtv.service.RestApiService;
-import com.beenet.theo_androidtv.service.RetrofitInstance;
+import com.beenet.beenetplay_tv.service.RestApiService;
+import com.beenet.beenetplay_tv.service.RetrofitInstance;
 
 import java.util.ArrayList;
 import java.util.List;

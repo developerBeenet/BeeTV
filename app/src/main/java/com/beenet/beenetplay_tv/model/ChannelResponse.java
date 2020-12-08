@@ -1,4 +1,4 @@
-package com.beenet.theo_androidtv.model;
+package com.beenet.beenetplay_tv.model;
 
 import java.util.List;
 

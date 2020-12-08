@@ -1,4 +1,4 @@
-package com.beenet.theo_androidtv.ui;
+package com.beenet.beenetplay_tv.ui;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,9 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.beenet.theo_androidtv.model.Category;
-import com.beenet.theo_androidtv.model.Channel;
-import com.beenet.theo_androidtv.R;
+import com.beenet.beenetplay_tv.model.Category;
+import com.beenet.beenetplay_tv.model.Channel;
+import com.beenet.beenetplay_tv.R;
 
 import java.util.List;
 
