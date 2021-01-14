@@ -1,19 +1,17 @@
-package com.example.theo_androidtv.ui;
+package com.beenet.beenetplay_tv.ui;
 
-
-import androidx.annotation.DrawableRes;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import com.example.theo_androidtv.R;
-import com.example.theo_androidtv.model.LoginResponse;
-import com.example.theo_androidtv.service.RestApiService;
-import com.example.theo_androidtv.service.RetrofitInstance;
+import com.beenet.beenetplay_tv.R;
+import com.beenet.beenetplay_tv.model.LoginResponse;
+import com.beenet.beenetplay_tv.service.RestApiService;
+import com.beenet.beenetplay_tv.service.RetrofitInstance;
 import com.muddzdev.styleabletoast.StyleableToast;
 
 import android.util.Base64;
@@ -21,7 +19,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
@@ -39,8 +36,10 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+/*
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKeys;
+*/
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -77,7 +76,11 @@ public class LoginActivity extends Activity {
         remember = findViewById(R.id.cb_Remember);
         btnLogin = findViewById(R.id.btnLogin);
 
+        //SharedPreferences
+        sharedPreferences = getSharedPreferences("Preferencias", Context.MODE_PRIVATE);
+
         //Preparando para encriptar Datos de SharedPreferences
+        /*
         try {
             //MasterKeys de Android para crear varios Strings encriptado con el formato AES256_GCM_SPEC, luego lo coloco dentro la variable sharedPreferences
             encriptar = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
@@ -101,11 +104,9 @@ public class LoginActivity extends Activity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+         */
 
-        //Shared Preference para guardar Credenciales de inicio de sesion; MODE PRIVATE solo la app tiene acceso a los datos
-        //sharedPreferences = getSharedPreferences("SHARED_PREF",MODE_PRIVATE);
-
-
+        //Shared Preference para guardar Credenciales de inicio de sesion; MODE PRIVATE solo la app tiene acceso a los dato
         //Obtener valor de Checkbox de 'Recordar'
         isRemember = sharedPreferences.getBoolean("CHECKBOX",false);
 
@@ -116,6 +117,7 @@ public class LoginActivity extends Activity {
             remember.setChecked(isRemember);
         }
 
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
@@ -125,6 +127,7 @@ public class LoginActivity extends Activity {
                 username = user.getText().toString();
                 password = pass.getText().toString();
                 isChecked = remember.isChecked();
+                //isChecked = false;
 
                 x = System.currentTimeMillis();
                 timestamp = Long.toString(x);
@@ -145,7 +148,7 @@ public class LoginActivity extends Activity {
                 }
 
                 //Llamando a la API para Login
-                postDataLogin(auth);
+                postDataLogin(auth,isChecked);
             }
         });
     }
@@ -153,7 +156,7 @@ public class LoginActivity extends Activity {
     /**
      * Funcion que envia datos a la API, recibe como paramentro valor encriptado
      * */
-    public void postDataLogin(final String auth){
+    public void postDataLogin(final String auth,boolean isChecked){
 
         //Call<LoginResponse> call = RetrofitClient.getInstance().getApi()
         //      .userLogin(COMPANY_ID,APP_ID,APP_NAME,API_VERSION,APPVERSION,auth);
@@ -185,6 +188,7 @@ public class LoginActivity extends Activity {
                         SharedPreferences.Editor editor = getSharedPreferences("SHARED_PREF",MODE_PRIVATE).edit();
                         editor.clear();
                         editor.apply();
+
                     }
 
                     //Mensaje de Exito de inicio de Sesion
@@ -201,6 +205,7 @@ public class LoginActivity extends Activity {
                     Intent intent = new Intent (getApplicationContext(), PlayerActivity.class);
                     Bundle myBundle = new Bundle();
                     myBundle.putString("auth",auth);
+                    myBundle.putBoolean("check",isRemember);
                     intent.putExtras(myBundle);
                     startActivityForResult(intent, 0);
 

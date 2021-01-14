@@ -1,43 +1,24 @@
-package com.example.theo_androidtv.ui;
+package com.beenet.beenetplay_tv.ui;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ObjectAnimator;
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.ColorStateList;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.Typeface;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.ContextThemeWrapper;
 
 
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
-import androidx.databinding.DataBindingUtil;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -47,39 +28,26 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 
-import com.example.theo_androidtv.R;
-//import com.example.theo_androidtv.databinding.ActivityMainBinding;
-import com.example.theo_androidtv.model.Category;
-import com.example.theo_androidtv.model.Channel;
-import com.example.theo_androidtv.model.LoginResponse;
-import com.example.theo_androidtv.service.RestApiService;
-import com.example.theo_androidtv.service.RetrofitInstance;
-import com.example.theo_androidtv.viewmodel.PlayerViewModel;
+import com.beenet.beenetplay_tv.R;
+
+import com.beenet.beenetplay_tv.model.Category;
+import com.beenet.beenetplay_tv.model.Channel;
+import com.beenet.beenetplay_tv.model.LoginResponse;
+import com.beenet.beenetplay_tv.service.RestApiService;
+import com.beenet.beenetplay_tv.service.RetrofitInstance;
+import com.beenet.beenetplay_tv.viewmodel.PlayerViewModel;
 import com.muddzdev.styleabletoast.StyleableToast;
 import com.theoplayer.android.api.THEOplayerView;
 import com.theoplayer.android.api.abr.AbrStrategyConfiguration;
 import com.theoplayer.android.api.abr.AbrStrategyType;
-import com.theoplayer.android.api.ads.AdsConfiguration;
-import com.theoplayer.android.api.event.player.PlayerEventTypes;
-import com.theoplayer.android.api.event.track.mediatrack.video.list.VideoTrackListEventTypes;
-import com.theoplayer.android.api.event.track.texttrack.list.TextTrackListEventTypes;
 import com.theoplayer.android.api.player.Player;
-import com.theoplayer.android.api.player.track.mediatrack.quality.QualityList;
-import com.theoplayer.android.api.player.track.mediatrack.quality.VideoQuality;
-import com.theoplayer.android.api.player.track.texttrack.TextTrack;
-import com.theoplayer.android.api.player.track.texttrack.TextTrackMode;
 import com.theoplayer.android.api.source.SourceDescription;
 import com.theoplayer.android.api.source.SourceType;
 import com.theoplayer.android.api.source.TypedSource;
-import com.example.theo_androidtv.databinding.ActivityMainBindingImpl;
 import com.theoplayer.android.api.source.addescription.THEOplayerAdDescription;
 
-import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -99,7 +67,8 @@ public class PlayerActivity extends AppCompatActivity {
     Intent i;
     Thread iniReloj = null;
     Runnable r;
-    boolean isUpdate = false;
+    public boolean isUpdate = false, check = false;
+
     String sec, min, hor, marca;
     String curTime;
     /* */
@@ -126,7 +95,7 @@ public class PlayerActivity extends AppCompatActivity {
     Player player;
 
     public String stream = " ";
-    String auth, id_category = "0";
+    String auth, id_category = "1";
     public boolean ads = false;
 
     @Override
@@ -134,11 +103,11 @@ public class PlayerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
 
-
         //Recuperando valor enviado proveniente de LoginActivityTV
         Bundle myBundle = this.getIntent().getExtras();
         if (myBundle != null){
             auth = myBundle.getString("auth");
+            check = myBundle.getBoolean("check");
         }
 
         /** Inicializando de elementos Visuales **/
@@ -149,7 +118,6 @@ public class PlayerActivity extends AppCompatActivity {
         r = new RefreshClock();
         iniReloj= new Thread(r);
         iniReloj.start();
-        //tHora.setText("00:00:00");
 
         /** Progress Bar animation**/
         /*
@@ -206,7 +174,7 @@ public class PlayerActivity extends AppCompatActivity {
 
         if(url == " "){
             ads = true;
-            url = "https://xcdrsbsv-a.beenet.com.sv/abr_foxnews/abr_foxnews_out/playlist.m3u8";
+            url = "https://xcdrsbsv-b.beenet.com.sv/abr_local2/abr_local2_out/playlist.m3u8";
         }
 
         /* CARGA CANAL */
@@ -228,9 +196,8 @@ public class PlayerActivity extends AppCompatActivity {
         
         // Creating a SourceDescription builder that contains the settings to be applied as a new
         // THEOplayer source.
-
         SourceDescription.Builder sourceDescription = sourceDescription(typedSource);
-                //.poster(getString(R.string.poster));
+
         //Agrega anuncio una vez al iniciar sesion
         if(ads == true){
             sourceDescription
@@ -348,20 +315,6 @@ public class PlayerActivity extends AppCompatActivity {
 
         cat = categoryList;
         categoryList.set(cat.size()-1,new Category(0,"Todos"));
-        System.out.println("***********************************************************************");
-        System.out.println(categoryList.get(0));
-        System.out.println(categoryList.get(1));
-        System.out.println(categoryList.get(2));
-        System.out.println(categoryList.get(3));
-        System.out.println(categoryList.get(4));
-        System.out.println(categoryList.get(5));
-        System.out.println(categoryList.get(6));
-        System.out.println(categoryList.get(7));
-        //System.out.println(categoryList.get(8));
-        System.out.println(categoryList.size());
-        System.out.println("*************************************************");
-
-
 
         ArrayAdapter<Category> arrayAdapter = new ArrayAdapter<>(getApplicationContext(),
                 R.layout.category_item, categoryList);
@@ -494,7 +447,6 @@ public class PlayerActivity extends AppCompatActivity {
 
 
     /** ---------  Metodos para Reloj  ---------- **/
-
     /**
      Esta clase es la encargada de estar de actualizar cada 1000 milisegundos es decir, un segudo. **/
     class RefreshClock implements Runnable{
@@ -578,8 +530,6 @@ public class PlayerActivity extends AppCompatActivity {
         minuto = c.get(Calendar.MINUTE);
         segundo = c.get(Calendar.SECOND);
         am_pm = c.get(Calendar.AM_PM);
-
-        //System.out.println("******************************* ******************* Hora: "+ hora);
 
         /**
          * si la marca es PM y hora es 0 que lo cambie a 12;
