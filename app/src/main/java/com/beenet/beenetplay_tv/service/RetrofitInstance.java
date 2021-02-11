@@ -9,10 +9,10 @@ public class RetrofitInstance {
 
     public static RestApiService getApiService() {
         if (retrofit == null) {
-
+            //https://cms.beenet.com.sv:4433/
             retrofit = new Retrofit
                     .Builder()
-                    .baseUrl("https://cms.beenet.com.sv:4433/")
+                    .baseUrl("https://pwapixel.instel.site:4433/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
 
