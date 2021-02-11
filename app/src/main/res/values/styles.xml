@@ -21,7 +21,7 @@
     </style>
 
     <style name="DialogCustom" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="android:colorAccent">#FF6600</item>
+        <item name="android:colorAccent">#ef476f</item>
         <item name="android:background">#C8C1C1</item>
         <item name="android:icon">@drawable/ic_exit</item>
     </style>

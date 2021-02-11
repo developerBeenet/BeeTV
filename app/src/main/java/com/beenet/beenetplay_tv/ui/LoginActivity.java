@@ -187,7 +187,7 @@ public class LoginActivity extends Activity {
                             .textSize(16)
                             .textColor(Color.WHITE)
                             .iconStart(R.drawable.ic_login_user)
-                            .backgroundColor(Color.rgb(255,112,0))
+                            .backgroundColor(Color.rgb(56,53,51))
                             .show();
 
                     //Llamada siguiente ventana PlayerActivity.class y Enviando parametro auth
@@ -205,7 +205,7 @@ public class LoginActivity extends Activity {
                             .text(loginResponse.getError_description())
                             .textColor(Color.WHITE)
                             .iconStart(R.drawable.ic_error)
-                            .backgroundColor(Color.rgb(255,112,0))
+                            .backgroundColor(Color.rgb(56,53,51))
                             .show();
                 }
             }
@@ -219,7 +219,7 @@ public class LoginActivity extends Activity {
                         .text(t.getMessage())
                         .textColor(Color.WHITE)
                         .iconStart(R.drawable.ic_error)
-                        .backgroundColor(Color.rgb(255,112,0))
+                        .backgroundColor(Color.rgb(56,53,51))
                         .show();
             }
         });

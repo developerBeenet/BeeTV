@@ -415,7 +415,7 @@ public class PlayerActivity extends AppCompatActivity {
                             .textSize(16)
                             .textColor(Color.WHITE)
                             .iconStart(R.drawable.ic_salir)
-                            .backgroundColor(Color.rgb(255,112,0))
+                            .backgroundColor(Color.rgb(56,53,51))
                             .show();
 
                     finish();
@@ -426,7 +426,7 @@ public class PlayerActivity extends AppCompatActivity {
                             .text(loginResponse.getError_description())
                             .textColor(Color.WHITE)
                             .iconStart(R.drawable.ic_error)
-                            .backgroundColor(Color.rgb(255,112,0))
+                            .backgroundColor(Color.rgb(56,53,51))
                             .show();
                 }
             }
@@ -439,7 +439,7 @@ public class PlayerActivity extends AppCompatActivity {
                         .text(t.getMessage())
                         .textColor(Color.WHITE)
                         .iconStart(R.drawable.ic_error)
-                        .backgroundColor(Color.rgb(255,112,0))
+                        .backgroundColor(Color.rgb(56,53,51))
                         .show();
             }
         });
