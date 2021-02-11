@@ -9,7 +9,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="#FF6600"
+        android:background="#ef476f"
         android:padding="8dp"
         android:src="@drawable/ic_exit"/>
 
