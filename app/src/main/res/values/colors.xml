@@ -6,11 +6,11 @@
     <color name="THEOGray">#393939</color>
     <color name="THEOYellow">#FFC41C</color>
     <color name="THEOYellowAlt">#FFB400</color>
-    <!-- Color App Beenet -->
+    <!-- Color App Beenet transparent_2:#004A4848 orange_1: #A4FF6600-->
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
-    <color name="transparent">#63B3B3B3</color>
+    <color name="transparent">#63AF2727</color>
     <color name="transparent_2">#004A4848</color>
-    <color name="orange_1">#A4FF6600</color>
+    <color name="orange_1">#A4ef476f</color>
 </resources>
