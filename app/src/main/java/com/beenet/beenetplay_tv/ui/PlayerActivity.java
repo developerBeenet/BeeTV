@@ -32,6 +32,7 @@ import com.beenet.beenetplay_tv.R;
 
 import com.beenet.beenetplay_tv.model.Category;
 import com.beenet.beenetplay_tv.model.Channel;
+import com.beenet.beenetplay_tv.model.ChannelResponse;
 import com.beenet.beenetplay_tv.model.LoginResponse;
 import com.beenet.beenetplay_tv.service.RestApiService;
 import com.beenet.beenetplay_tv.service.RetrofitInstance;
@@ -46,6 +47,7 @@ import com.theoplayer.android.api.source.SourceType;
 import com.theoplayer.android.api.source.TypedSource;
 import com.theoplayer.android.api.source.addescription.THEOplayerAdDescription;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -84,6 +86,7 @@ public class PlayerActivity extends AppCompatActivity {
     /* Categories */
     Spinner sp_categorias;
     List<Category> cat = null;  //Lista de Objetos Categoria
+    public ArrayList<Channel> can= null;
 
     /* Channels */
     RecyclerView mRecyclerView;
@@ -110,6 +113,8 @@ public class PlayerActivity extends AppCompatActivity {
             check = myBundle.getBoolean("check");
         }
 
+        getChannels();
+
         /** Inicializando de elementos Visuales **/
         initializationViews();
         playerViewModel = ViewModelProviders.of(this).get(PlayerViewModel.class);
@@ -118,6 +123,7 @@ public class PlayerActivity extends AppCompatActivity {
         r = new RefreshClock();
         iniReloj= new Thread(r);
         iniReloj.start();
+
 
         /** Progress Bar animation**/
         /*
@@ -306,15 +312,20 @@ public class PlayerActivity extends AppCompatActivity {
 
             @Override
             public void onChanged(List<Category> categories) {
+
                 prepareSpinnerCategories(categories);
             }
         });
     }
 
-    private void prepareSpinnerCategories(List<Category> categoryList){
+    public void prepareSpinnerCategories(List<Category> categoryList){
 
         cat = categoryList;
         categoryList.set(cat.size()-1,new Category(0,"Todos"));
+
+        System.out.println("((((((((((((((((((((((((( "+can.size()+" ))))))))))))))))))))))))");
+
+        
 
         ArrayAdapter<Category> arrayAdapter = new ArrayAdapter<>(getApplicationContext(),
                 R.layout.category_item, categoryList);
@@ -334,6 +345,33 @@ public class PlayerActivity extends AppCompatActivity {
             }
         });
     }
+
+    //Llamando lo cananles
+    public void getChannels(){
+
+        RestApiService apiService = RetrofitInstance.getApiService();
+
+        Call<ChannelResponse> call = apiService.allChannels(auth);
+
+        call.enqueue(new Callback<ChannelResponse>() {
+            @Override
+            public void onResponse(Call<ChannelResponse> call, Response<ChannelResponse> response) {
+                ChannelResponse mchannelResponse = response.body();
+                can = (ArrayList<Channel>) mchannelResponse.getResponse_object();
+                System.out.println("===========DESDE Player Activity =================== "+can.size()+"========================");
+            }
+
+            @Override
+            public void onFailure(Call<ChannelResponse> call, Throwable t) {
+
+            }
+        });
+
+       // System.out.println("===========antes de return =================== "+can+"========================");
+        //return can;
+
+    }
+
 
     /** Metodo que captura acciones del D-PAD **/
     @Override

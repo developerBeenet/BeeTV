@@ -11,6 +11,7 @@ import com.beenet.beenetplay_tv.model.CategoryRepository;
 import com.beenet.beenetplay_tv.model.Channel;
 import com.beenet.beenetplay_tv.model.ChannelRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PlayerViewModel extends AndroidViewModel {
@@ -32,5 +33,9 @@ public class PlayerViewModel extends AndroidViewModel {
 
     public LiveData<List<Channel>> getAllChannel(String auth, String filter){
         return channelRepository.getMutableLiveData(auth,filter);
+    }
+
+    public List<Channel> getChannels(String auth){
+        return channelRepository.getChannels(auth);
     }
 }

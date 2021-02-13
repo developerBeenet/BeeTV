@@ -17,6 +17,7 @@ import retrofit2.Response;
 public class ChannelRepository {
 
     private ArrayList<Channel> channels = new ArrayList<>();
+    public List<Channel> canales = null;
     private MutableLiveData<List<Channel>> mutableLiveData = new MutableLiveData<>();
     private Application application;
 
@@ -71,5 +72,35 @@ public class ChannelRepository {
         return mutableLiveData;
     }
 
+    public List<Channel> getChannels(String auth){
+
+        //Borrando Elementos de Arraylist
+        //channels.clear();
+
+        RestApiService apiService = RetrofitInstance.getApiService();
+
+        Call<ChannelResponse> call = apiService.allChannels(auth);
+
+        call.enqueue(new Callback<ChannelResponse>() {
+            @Override
+            public void onResponse(Call<ChannelResponse> call, Response<ChannelResponse> response) {
+                ChannelResponse mchannelResponse = response.body();
+
+                channels = (ArrayList<Channel>) mchannelResponse.getResponse_object();
+                System.out.println("======================================== "+channels.size()+"========================");
+            }
+
+            @Override
+            public void onFailure(Call<ChannelResponse> call, Throwable t) {
+
+            }
+        });
+
+        //System.out.println("======================================== "+channels.size()+"========================");
+
+        //return mutableLiveData;
+        return canales;
+
+    }
 
 }
