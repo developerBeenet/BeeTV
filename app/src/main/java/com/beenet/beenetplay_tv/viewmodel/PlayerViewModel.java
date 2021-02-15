@@ -35,7 +35,4 @@ public class PlayerViewModel extends AndroidViewModel {
         return channelRepository.getMutableLiveData(auth,filter);
     }
 
-    public List<Channel> getChannels(String auth){
-        return channelRepository.getChannels(auth);
-    }
 }

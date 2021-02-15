@@ -32,6 +32,7 @@ public class CategoryRepository {
 
         Call<CategoryResponse> call = apiService.allCategories(auth);
 
+        /* Llamada de Categorias */
         call.enqueue(new Callback<CategoryResponse>() {
             @Override
             public void onResponse(Call<CategoryResponse> call, Response<CategoryResponse> response) {
@@ -43,16 +44,13 @@ public class CategoryRepository {
                     mutableLiveData.setValue(categories);
                 }
             }
-
             @Override
             public void onFailure(Call<CategoryResponse> call, Throwable t) {
 
             }
-
         });
 
         return mutableLiveData;
     }
-
 
 }

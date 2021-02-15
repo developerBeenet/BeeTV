@@ -113,8 +113,6 @@ public class PlayerActivity extends AppCompatActivity {
             check = myBundle.getBoolean("check");
         }
 
-        getChannels();
-
         /** Inicializando de elementos Visuales **/
         initializationViews();
         playerViewModel = ViewModelProviders.of(this).get(PlayerViewModel.class);
@@ -155,7 +153,6 @@ public class PlayerActivity extends AppCompatActivity {
 
         /** Poblando Spinner **/
         getCategory();
-
         /** Poblando RecyclerView **/
         getPopularChannel(id_category);
 
@@ -172,6 +169,7 @@ public class PlayerActivity extends AppCompatActivity {
 
     }
 
+    /** Configuracion de Theoplayer **/
     private void configureTheoPlayer(String url) {
         // Creating a TypedSource builder that defines the location of a single stream source
         // and has Widevine DRM parameters applied.
@@ -229,6 +227,7 @@ public class PlayerActivity extends AppCompatActivity {
     }
 
     // Overriding default events
+    /** Metodos de Theoplayer **/
     @Override
     protected void onPause() {
         super.onPause();
@@ -246,6 +245,8 @@ public class PlayerActivity extends AppCompatActivity {
         super.onDestroy();
         theoplayerView.onDestroy();
     }
+
+    /** Fin De Metodos de Player **/
 
     private void initializationViews() {
 
@@ -270,6 +271,8 @@ public class PlayerActivity extends AppCompatActivity {
 
     }
 
+
+    /** Trae los canales en funcion de la categoria **/
     public void getPopularChannel(String filter) {
         swipeRefresh.setRefreshing(true);
         playerViewModel.getAllChannel(auth,filter).observe(this, new Observer<List<Channel>>() {
@@ -281,7 +284,7 @@ public class PlayerActivity extends AppCompatActivity {
         });
 
     }
-
+    /** Carga los canales en un recyclerView **/
     private void prepareRecyclerView(List<Channel> channelList) {
 
         mChannelAdapter = new ChannelAdapter(channelList,cat);
@@ -307,25 +310,22 @@ public class PlayerActivity extends AppCompatActivity {
 
     }
 
+    /**Trae las Categorias de playerviewModel*/
     public void getCategory(){
         playerViewModel.getAllCategory(auth).observe(this,new Observer<List<Category>>(){
 
             @Override
             public void onChanged(List<Category> categories) {
-
                 prepareSpinnerCategories(categories);
             }
         });
     }
 
+    /**Llena la lista desplegable de Categorias **/
     public void prepareSpinnerCategories(List<Category> categoryList){
 
         cat = categoryList;
         categoryList.set(cat.size()-1,new Category(0,"Todos"));
-
-        System.out.println("((((((((((((((((((((((((( "+can.size()+" ))))))))))))))))))))))))");
-
-        
 
         ArrayAdapter<Category> arrayAdapter = new ArrayAdapter<>(getApplicationContext(),
                 R.layout.category_item, categoryList);
@@ -345,33 +345,6 @@ public class PlayerActivity extends AppCompatActivity {
             }
         });
     }
-
-    //Llamando lo cananles
-    public void getChannels(){
-
-        RestApiService apiService = RetrofitInstance.getApiService();
-
-        Call<ChannelResponse> call = apiService.allChannels(auth);
-
-        call.enqueue(new Callback<ChannelResponse>() {
-            @Override
-            public void onResponse(Call<ChannelResponse> call, Response<ChannelResponse> response) {
-                ChannelResponse mchannelResponse = response.body();
-                can = (ArrayList<Channel>) mchannelResponse.getResponse_object();
-                System.out.println("===========DESDE Player Activity =================== "+can.size()+"========================");
-            }
-
-            @Override
-            public void onFailure(Call<ChannelResponse> call, Throwable t) {
-
-            }
-        });
-
-       // System.out.println("===========antes de return =================== "+can+"========================");
-        //return can;
-
-    }
-
 
     /** Metodo que captura acciones del D-PAD **/
     @Override
@@ -486,7 +459,7 @@ public class PlayerActivity extends AppCompatActivity {
 
     /** ---------  Metodos para Reloj  ---------- **/
     /**
-     Esta clase es la encargada de estar de actualizar cada 1000 milisegundos es decir, un segudo. **/
+     * Esta clase es la encargada de estar de actualizar cada 1000 milisegundos es decir, un segudo. **/
     class RefreshClock implements Runnable{
         // @Override
         @SuppressWarnings("unused")
